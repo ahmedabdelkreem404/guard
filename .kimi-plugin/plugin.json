@@ -1,0 +1,24 @@
+{
+  "name": "guard",
+  "version": "1.1.0",
+  "description": "Senior engineering doctrine: security, content protection, performance, SEO, responsive design, Arabic/English RTL, and admin dashboards.",
+  "author": {
+    "name": "Ahmed Abdelkreem Ali",
+    "email": "ahmedabdelkreem404@gmail.com"
+  },
+  "homepage": "https://github.com/ahmedabdelkreem404/guard",
+  "license": "MIT",
+  "keywords": ["skills", "security", "performance", "seo", "design", "dashboard", "audit", "rtl"],
+  "skills": "./skills/",
+  "sessionStart": {
+    "skill": "using-guard"
+  },
+  "skillInstructions": "Kimi Code tool mapping for Guard skills:\n\n- When a Guard skill says to ask the user, present options, or wait for the user's choice, call Kimi Code's `AskUserQuestion` tool with 1-4 questions and 2-4 concrete options each. Put the recommended option first and suffix its label with `(Recommended)`. Ask in Arabic. Do not render the choices as plain text unless `AskUserQuestion` is unavailable or the session is in auto permission mode.\n- When a Guard skill refers to the `Skill` tool, use Kimi Code's native `Skill` tool.\n- When a Guard skill asks to search file contents use `Grep`; to find files use `Glob`; to read a region of a file use `Read` with offset/limit.\n- Guard uses subagents only if the user chooses that execution style; then use Kimi Code's `Agent` tool with `subagent_type: \"coder\"`.",
+  "interface": {
+    "displayName": "Guard",
+    "shortDescription": "Security, SEO, performance, design and dashboard doctrine for coding agents",
+    "developerName": "Ahmed Abdelkreem Ali",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://github.com/ahmedabdelkreem404/guard"
+  }
+}

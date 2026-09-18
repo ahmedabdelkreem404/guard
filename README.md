@@ -6,8 +6,11 @@ Guard is a senior-engineer doctrine for your coding agent, packaged as a Claude 
 
 - [How it works](#how-it-works)
 - [Installation](#installation)
-  - [Claude Code](#claude-code)
-  - [Single project, no marketplace](#single-project-no-marketplace)
+  - [Claude Code](#claude-code-tested)
+  - [Codex](#codex-cli--codex-app-marketplace-registers-tested-plugin-install-is-done-in-the-ui)
+  - [Antigravity](#antigravity-tested)
+  - [Gemini, Cursor, Kimi, Devin, Droid, Copilot](#gemini-cli-manifest-only)
+  - [Any tool that reads SKILL.md folders](#any-tool-that-reads-skillmd-folders-no-marketplace)
 - [The Basic Workflow](#the-basic-workflow)
 - [What's Inside](#whats-inside)
 - [Philosophy](#philosophy)
@@ -30,25 +33,83 @@ Because the check is mandatory rather than suggested, you don't need to do anyth
 
 ## Installation
 
-Guard is a Claude Code plugin. It is self-hosted: this repository is its own marketplace.
+Installation differs by tool: each one reads its own small manifest from this repo and installs through
+its own command. If you use more than one, install Guard separately for each. This repository is its own
+marketplace.
 
-### Claude Code
+Status labels: **tested** = installed and checked on a real machine; **manifest only** = the manifest
+follows the reference shape used by other multi-tool skill packs, but the install was not run.
 
-- Register the marketplace:
+### Claude Code (tested)
 
-  ```bash
-  /plugin marketplace add ahmedabdelkreem404/guard
-  ```
+```bash
+/plugin marketplace add ahmedabdelkreem404/guard
+/plugin install guard@guard
+```
 
-- Install the plugin:
+Or from a terminal: `claude plugin marketplace add ahmedabdelkreem404/guard` then
+`claude plugin install guard@guard`. Check with `claude plugin list`.
 
-  ```bash
-  /plugin install guard@guard
-  ```
+### Codex CLI / Codex app (marketplace registers, tested; plugin install is done in the UI)
 
-### Single project, no marketplace
+```bash
+codex plugin marketplace add ahmedabdelkreem404/guard
+```
 
-Copy `skills/guard` and `skills/using-guard` into the project's `.claude/skills/` folder. No repo or marketplace needed.
+Then open the plugin browser (`/plugins` in the CLI, Plugins in the app), find **Guard**, and install it.
+
+### Antigravity (tested)
+
+```bash
+git clone https://github.com/ahmedabdelkreem404/guard
+cd guard
+powershell -ExecutionPolicy Bypass -File scripts/install-antigravity.ps1   # Windows
+bash scripts/install-antigravity.sh                                        # macOS / Linux
+```
+
+The script stages the manifest and skills and runs `agy plugin install`. Restart `agy` afterwards.
+
+### Gemini CLI (manifest only)
+
+```bash
+gemini extensions install https://github.com/ahmedabdelkreem404/guard
+```
+
+### Cursor (manifest only)
+
+`.cursor-plugin/plugin.json` is included. Install it through Cursor's plugin marketplace/local-plugin
+mechanism.
+
+### Kimi Code (manifest only)
+
+```text
+/plugins install https://github.com/ahmedabdelkreem404/guard
+```
+
+### Devin CLI (manifest only)
+
+```bash
+devin plugins install ahmedabdelkreem404/guard
+```
+
+### Factory Droid and GitHub Copilot CLI (manifest only — they consume the Claude Code marketplace)
+
+```bash
+droid plugin marketplace add https://github.com/ahmedabdelkreem404/guard
+droid plugin install guard@guard
+
+copilot plugin marketplace add ahmedabdelkreem404/guard
+copilot plugin install guard@guard
+```
+
+### Not supported yet
+
+OpenCode, Pi and Hermes need a small JavaScript/Python extension that this repository does not have.
+
+### Any tool that reads `SKILL.md` folders, no marketplace
+
+Copy `skills/guard` and `skills/using-guard` into the tool's skills folder (for Claude Code:
+`.claude/skills/` in a project, or `~/.claude/skills/` for every project).
 
 ## The Basic Workflow
 
@@ -72,9 +133,14 @@ Copy `skills/guard` and `skills/using-guard` into the project's `.claude/skills/
 
 ```
 guard/
-├── .claude-plugin/
+├── .claude-plugin/          # Claude Code (also read by Droid and Copilot CLI)
 │   ├── plugin.json          # plugin identity
 │   └── marketplace.json     # lets this repo host its own marketplace
+├── .codex-plugin/           # Codex manifest
+├── .agents/plugins/         # Codex marketplace manifest
+├── .cursor-plugin/  .kimi-plugin/  .devin-plugin/   # one small manifest each
+├── gemini-extension.json + GEMINI.md                # Gemini CLI
+├── scripts/install-antigravity.{ps1,sh}             # Antigravity installer
 ├── skills/
 │   ├── using-guard/
 │   │   └── SKILL.md         # the enforcer: makes the check mandatory

@@ -1,0 +1,15 @@
+{
+  "name": "guard",
+  "displayName": "Guard",
+  "description": "Senior engineering doctrine: security, content protection, performance, SEO, responsive design, Arabic/English RTL, and admin dashboards.",
+  "version": "1.1.0",
+  "author": {
+    "name": "Ahmed Abdelkreem Ali",
+    "email": "ahmedabdelkreem404@gmail.com"
+  },
+  "homepage": "https://github.com/ahmedabdelkreem404/guard",
+  "repository": "https://github.com/ahmedabdelkreem404/guard",
+  "license": "MIT",
+  "keywords": ["skills", "security", "performance", "seo", "design", "dashboard", "audit", "rtl"],
+  "skills": "./skills/"
+}
