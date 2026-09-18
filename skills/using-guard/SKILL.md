@@ -23,9 +23,12 @@ This is not negotiable. You cannot rationalize your way out of this.
 software — before clarifying questions, before exploring the codebase, before reading files to "get
 context." If it turns out `guard` doesn't apply, you can stand down; but check first, not after.
 
-Then follow `guard`'s own invocation-mode table (`/guard`, `/guard <area>`, or silent application to an
-ordinary build/fix/review request) exactly as it specifies. `guard` itself decides when to narrate and
-when to stay silent — this skill only governs whether it gets invoked at all.
+Then follow `guard`'s own invocation-mode table exactly as it specifies: `/guard` alone runs an
+autonomous full audit-and-fix with no further prompt from the user; `/guard <area>` runs a scoped one; a
+new-project or feature request runs Build mode; an ordinary fix or review applies the doctrine silently.
+`guard` itself decides when to narrate and when to stay silent — this skill only governs whether it gets
+invoked at all. Checking `guard` first does not mean interrogating the user first: `guard` decides what,
+if anything, is worth asking (in Arabic, with suggested answers).
 
 ## Skill priority
 

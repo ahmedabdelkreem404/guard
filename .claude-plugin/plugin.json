@@ -1,7 +1,7 @@
 {
   "name": "guard",
   "description": "Senior engineering doctrine for Claude Code: security & authorization, performance, SEO, responsive/RTL design, and admin-dashboard rules, enforced automatically before any build, fix, review, or audit.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Ahmed Abdelkreem Ali",
     "email": "ahmedabdelkreem404@gmail.com"

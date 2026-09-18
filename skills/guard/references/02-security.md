@@ -105,6 +105,62 @@ is a claim, not a confirmation.
 
 ---
 
+## 5b. Content protection — courses, paid media, private data (layered)
+
+Goal: make theft **hard, traceable and revocable**, and make cross-user data leaks structurally
+impossible. No single control is enough; stack these, scaled to how valuable the content is (a free
+blog needs none; a paid course library needs most).
+
+**Layer 0 — authorize at request time, everywhere.** Enrollment/subscription/ownership is checked on
+the page, the API, the video manifest, every segment/key request, every file download and every export —
+not once at render. A UUID in a URL is not authorization. Revoked or expired access stops at the next request.
+
+**Layer 1 — never serve a raw file URL for protected video.**
+- Use adaptive streaming (HLS/DASH) with **encrypted segments**; the decryption key is served only by an authorized endpoint, per user/session. For high-value libraries use a managed video host or multi-DRM (Widevine / FairPlay / PlayReady) — DRM is the only layer that also constrains capture on supported players.
+- Signed, **short-lived** URLs (minutes) for manifest, segments and files; refresh during playback; bind to the user/session. Do not hard-bind to IP (mobile networks change IPs).
+- No public bucket, no directory listing, no predictable paths, hotlinking blocked by signature (a Referer check alone is weak).
+
+**Layer 2 — session and sharing controls.** Cap concurrent sessions/devices per account; list and revoke
+sessions; flag account sharing (simultaneous streams, many devices, impossible travel); rate-limit
+segment/file requests and alert on a sweep of sequential segments or bulk downloads (scraper signature).
+
+**Layer 3 — deterrence and traceability.** A dynamic, moving on-screen watermark (user id / masked
+email, changing position) on video and on rendered PDFs; forensic watermarking only for very
+high-value content. Platform capture controls where they exist (Android `FLAG_SECURE`, iOS capture
+detection, DRM-enforced black frames) — **state plainly that they are deterrents**. Disabling right-click
+or dev tools is theatre; do not rely on it and do not claim it protects anything.
+
+**Layer 4 — documents.** PDFs, slides and attachments stream through an authorized endpoint with a
+per-user watermark and short-lived signed URL; they share the course's authorization boundary.
+
+**Layer 5 — data must not cross users or tenants.** Scope in the query, not after the fetch. Check every
+side channel: search index (tenant/user filter in the query itself), cache keys, CDN, exports, reports,
+notifications, webhooks, background jobs, analytics views, logs (redact PII), error messages, and email
+links (signed and expiring). API responses omit fields the role cannot see — hiding in the UI is not enough.
+
+**Layer 6 — detect and respond.** Audit-log access to protected content; alert on anomalies; have a
+working way to revoke one user, revoke all tokens, and rotate signing/encryption keys without downtime.
+
+**Public teaser vs paid body.** Public marketing pages may show title, summary, curriculum outline and a
+free preview. The paid body never appears in server-rendered HTML, the sitemap, structured data values,
+or any crawler-facing response. Do not show crawlers something users cannot get — that is cloaking
+(`04-seo.md` §9).
+
+Verify like an attacker: as unauthenticated, as another student, as an expired subscriber, replay an old
+signed URL, fetch a segment/key directly, enumerate IDs, hit the download endpoint without the page.
+
+---
+
+## 5c. Also apply when relevant (full text in `deep/ProjectGuard.md`)
+
+- **Privacy** (Appendix A2): data map, consent before non-essential collection, deletion/export, retention, minors get extra scrutiny.
+- **Payments** (A3): processor-hosted fields/tokenization, no raw card data anywhere, signed idempotent webhooks, reconciliation of refunds/chargebacks, manual proof is a claim.
+- **Supply chain** (A4) and **infrastructure/CI** (A5): scheduled dependency scans, lock files, least-privilege cloud credentials, no publicly listable storage.
+- **Race conditions, idempotency, mobile security, offline sync**: §21–§22, §62–§63.
+- **Search and import/export leakage**: §60–§61 — search must never return unauthorized records.
+
+---
+
 ## 6. Secrets, headers, dependencies
 
 - No secrets in source, git history, logs, error payloads, client bundles or mobile app packages. Anything shipped to a client is public.

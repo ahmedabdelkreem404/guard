@@ -39,6 +39,16 @@ handles this natively *if* you don't fight it:
 
 ---
 
+**Rules that make "Arabic reads right-to-left, English left-to-right, even in the same sentence" hold:**
+- The **paragraph** direction comes from the page/component language (`dir="rtl"` for Arabic UI). Inside it, embedded English runs are laid out left-to-right by the bidi algorithm automatically.
+- **User-generated or unknown-language text** (names, comments, product titles, search input): set `dir="auto"` on the element (and `<input dir="auto">`, `<textarea dir="auto">`) so each value picks its own direction from its first strong character. Isolate an inline run with `<bdi>` when its neighbours would otherwise reorder it.
+- Punctuation and numbers at run boundaries are the usual failures: a trailing `.` `)` `%` next to Latin text, a price `199 EGP`, a phone number, `+`/`-` signs. Test them; fix with `<bdi>`/`unicode-bidi: isolate`, not with hard `direction` overrides.
+- Set `lang` on each language run when a page mixes scripts, so the right font and hyphenation apply.
+- Flutter: `Directionality` from the locale; for dynamic text use `Bidi.detectRtlDirectionality`/`TextDirection` per `Text`; keep `TextAlign.start`, never hardcoded `left`/`right`.
+- Arabic typography: no letter-spacing, no forced uppercase, no italic simulation; give Arabic a slightly larger line-height (≈1.6–1.8) than Latin; never let a Latin-only fallback font render Arabic glyphs.
+
+---
+
 ## 3. Translation as structured data, not scattered strings
 
 Translatable content lives in data (a translations table, locale files, or a CMS field per language),

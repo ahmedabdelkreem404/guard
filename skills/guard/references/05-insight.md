@@ -1,9 +1,10 @@
 # Insight — Analytics, Search Intelligence, Recommendations, Personalization
 
-Read only when the task actually asks for tracking, events, search intelligence, recommendations or
-personalization — or the product's business model obviously depends on discovery (store, marketplace,
-LMS catalogue, content platform). **This module is opt-in.** Do not build any of it just because it is
-here; the `00-audit-protocol.md` Phase 8 gate governs when it applies.
+Read when the task asks for tracking, events, search intelligence, recommendations or personalization —
+or the product's business model depends on discovery (store, marketplace, LMS/course catalogue, content
+or feed platform, SaaS feature adoption). **Scope it to the product:** minimal-first for those; analytics-lite
+for a landing page or portfolio; nothing for a project with no discovery surface. The Insight gate in
+`00-audit-protocol.md` decides. Never build the whole module just because it is here.
 
 Order of escalation — never skip ahead:
 
@@ -104,6 +105,22 @@ together") — never a stronger emotional claim than the system actually compute
 - ERP: role-aware shortcuts, frequent modules/actions, saved views. **Authorization filters before personalization, never the reverse** — a suggestion must never surface a record the user cannot open.
 - LMS: continue-where-you-left-off, next lesson, related course — never expose one student's progress to another.
 - Marketplace: separate buyer/seller signals; never leak seller-private data through buyer-facing recommendations or vice versa.
+
+---
+
+## 7b. Interest and intent modelling — the feed-style pattern, at project scale
+
+What feed recommenders do, without the platform: **implicit signals → weighted, decayed interest profile →
+candidates → rank → a small exploration slice.** It is scoring, not machine learning, and it is enough
+for most stores, course catalogues and content sites.
+
+- **Signals** (weights are tuned per product, kept in one config object): completion ratio (finished / total — not raw time on page), replay/re-open, save/favorite, share, search click, add-to-cart, purchase; negatives: quick exit, skip, hide, "not interested". Dwell time alone is noisy — combine it with another signal.
+- **Interest profile**: per-user category/topic/brand affinity, updated incrementally with recency decay (`score = score × decay + weighted_event`), capped so repeated accidental events cannot dominate. Store aggregates, not raw event history.
+- **Session intent beats long-term taste.** The current search, filter or open item outweighs the profile. A shopper who usually buys books and just searched "Arduino Uno" sees Arduino.
+- **Exploration slice** (~5–15%) of relevant-but-new items so new content is not buried and the profile does not collapse into a bubble. Cold start falls back: session → context → category → popular → editorial.
+- **Showing what they want before they search**: "continue where you left off", recently viewed, next-best-action, similar-to-current, predictive search suggestions built from recent + popular normalized queries, and useful empty-search states. 1–3 surfaces, never a carousel on every page.
+- **Boundaries**: consent before optional tracking; collect only fields the algorithm reads; no sensitive inferences; the user can reset or disable; identity comes from the server session, never a client-supplied `user_id`; per-user cached results are isolated; recommendations never block the primary render and always have a fallback.
+- **Escalate only with evidence.** Collaborative filtering, embeddings or ML need enough real behaviour and a measured baseline they beat (`deep/InsightGuard.md` §141–§154). A simple weighted score you can explain beats a model you cannot.
 
 ---
 

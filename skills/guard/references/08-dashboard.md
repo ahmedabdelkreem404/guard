@@ -144,12 +144,52 @@ small screens; tables get a real mobile strategy; no accidental horizontal overf
 
 ---
 
+## 12b. Full control — everything the product shows can be managed, safely
+
+For every entity the public site or app displays — page, section, hero, banner, product, course/lesson,
+category, menu item, FAQ, testimonial, plan, coupon, language, email template, media asset — an
+authorized operator can do what the business needs from the dashboard, **without code**:
+
+```
+list · search · filter → view → add → edit → duplicate → reorder → show/hide (disable)
+→ schedule (publish/unpublish) → cancel (orders, subscriptions, bookings — with reason)
+→ archive/restore → delete (only with impact check)
+```
+
+Show each action only if the operator's permission allows it, enforce it server-side, audit the
+high-impact ones. Build the shared pieces once (data table, form shell, media picker, translation
+fields, SEO editor, permission editor) and reuse them across modules — that is what keeps dozens of
+screens consistent and small.
+
+**Styles are managed as structured choices, never raw code.** The dashboard exposes what the Identity
+Lock (`06-design.md` §1) allows: brand theme / preset, light-dark mode, logo and favicon upload, primary
+and accent picked **from approved token swatches**, font from an approved list, density/section-layout
+variants, background style per section. Never a hex input, CSS box or HTML field for normal editing.
+Guardrails: an automatic contrast check blocks inaccessible combinations, a live preview and
+draft → publish flow, and one-click rollback to the previous version. The result always stays inside the
+one visual identity — an operator can change *which* approved option is used, not break the system.
+
+Discover which of these apply first (§1). A landing page needs sections + media + SEO + settings, not a
+40-module admin.
+
+---
+
 ## 13. Cross-module handoff
 
 A dashboard change that touches permissions → apply `02-security.md`. Touches public content/routing/
 metadata → apply `04-seo.md`. Touches recommendations/tracking/search ranking → apply `05-insight.md`.
 Touches shared UI/theme/responsive → apply `06-design.md`. A change is not exempt from these just because
 it lives under `/admin`.
+
+---
+
+## 13b. Where the full rules live (`deep/DashboardGuard.md`, read by section)
+
+Reports/KPIs §5–§7 · printing/thermal §8–§9 · roles and permission matrix §13–§17 · audit §18–§19 ·
+languages §20–§29 · sections/hero/media §30–§41 · SEO controls §42–§50 · payments §51–§57 ·
+vertical dashboards (LMS/ERP/SaaS/CMS) §61–§64 · settings/theme/no-code §67–§71 · maintenance and
+versioning §72–§82 · bulk actions §87–§88 · import/export §92–§94 · health/logs/backups §95–§103 ·
+tests §146–§154 · release gate §201–§207.
 
 ---
 

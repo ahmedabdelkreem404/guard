@@ -115,6 +115,7 @@ See `07-i18n-rtl.md` for the rendering side.
 - SSR/SSG/ISR/CDN caches: a shared cached response contains only public data. Authentication state must not silently change a shared response. Vary or isolate by every dimension that changes output.
 - User-generated content is an injection surface for titles, descriptions, canonicals, Open Graph, JSON-LD, sitemaps and redirects. Treat it as untrusted.
 - Preview and draft content is access-controlled and non-indexable.
+- **No cloaking.** Crawlers and users receive the same content. Paid or private content is never shown to a crawler that a normal visitor cannot get; a public teaser (title, summary, outline, free preview) is what gets indexed.
 - Staging environments are protected by authentication or network rules, not by `robots.txt` alone.
 - Open redirects become SEO abuse — validate redirect targets.
 
@@ -131,13 +132,46 @@ manipulate a ranking rather than help a user, reject it.
 
 ## 11. Subdomains and new projects
 
-A subdomain is treated as its own site: it needs its own verification in Search Console, its own sitemap,
-its own robots policy, its own internal linking, and links from the main site where genuinely relevant.
-Nothing is inherited automatically.
+A subdomain is treated as its own site: it needs its own verification in Search Console (or a Domain
+property covering all subdomains), its own sitemap, its own `robots.txt`, its own canonicals and internal
+linking, and links from the main site where genuinely relevant. Nothing is inherited automatically.
+
+**Subdomain or subfolder?** Default to a subfolder (`example.com/blog`) for content that belongs to the
+same brand and audience. Use a subdomain when it is genuinely a separate product or app
+(`app.`, `docs.`, a regional/tenant site) or the platform requires it. Do not split content across
+subdomains for SEO reasons.
+
+**Every public subdomain must have, before launch:**
+- HTTPS with a valid certificate (wildcard cert renewal automated or monitored) and one host policy — redirect the non-preferred variant directly.
+- Its own `robots.txt` and XML sitemap listing only its own canonical URLs; the sitemap is referenced from that host's `robots.txt`.
+- Absolute self-canonicals on its own host. Never canonicalize a real page to another subdomain unless it truly is a duplicate.
+- Real content in server-rendered HTML, unique titles/descriptions, structured data (`Organization`/`WebSite` with the correct URL), Open Graph.
+- At least one crawlable internal link path in, from the main site or from another indexed page — an unlinked subdomain is an orphan.
+- Analytics and Search Console monitoring from day one.
+
+**Multi-tenant subdomains (`tenant.example.com`).** Decide per tenant whether the site is public. Public
+tenant pages get the checklist above. Prevent duplicate content across tenants that share templates —
+unique content per tenant, or `noindex` for empty/template-only tenants. Private tenant areas are
+protected by authorization and are never in a sitemap. Staging/preview subdomains use authentication,
+not `robots.txt` alone.
+
+**Cookies and security.** Scope cookies to the exact host unless sharing is intended; a parent-domain
+cookie is readable by every subdomain. A dangling DNS record pointing at a deleted service is a
+subdomain-takeover risk — remove stale records.
 
 For a brand-new project the realistic order is: correct technical foundation → genuinely useful content →
-internal linking → submission and monitoring → iteration on real query data. Indexing takes time; promise
-correctness and eligibility, never a position.
+internal linking → submission (Search Console, sitemap) and monitoring → iteration on real query data.
+Indexing takes time. **Promise correctness and eligibility, never a position** — no tag, schema,
+subdomain or tool can guarantee a first-page ranking.
+
+---
+
+## 11b. Where the full rules live (`deep/SEOGuard.md`)
+
+Read the section only when the task needs it: migrations §62–§63 and §93 · programmatic SEO §69 ·
+e-commerce/product/variants §41–§42, §70–§71 · SaaS §72 · education §73 · faceted navigation §26 ·
+JavaScript SEO §28 · Core Web Vitals §51–§54 · crawl budget/log analysis §58, §66 · CI checks §80 ·
+priorities §87 · report format §90 · security integration §96–§99.
 
 ---
 
