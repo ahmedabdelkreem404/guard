@@ -13,14 +13,16 @@ modules a given task actually touches, instead of paying the full doctrine's tok
 ## اقرأ هنا أولاً (Arabic quick-start)
 
 **إيه ده؟** بلجن لـ Claude Code فيه سكيلين:
+
 - **`using-guard`** — سكيل صغير شغلته الوحيدة إنه يجبر الإيجنت يستدعي `guard` قبل أي رد على طلب بناء/تعديل/مراجعة/فحص — مش اقتراح، قاعدة إلزامية، بنفس أسلوب `using-superpowers` في مشروع superpowers.
 - **`guard`** — العقيدة نفسها: أمان وتفويض، أداء، SEO، تصميم متجاوب وهوية بصرية، عربي/إنجليزي RTL، تريكينج وتوصيات، ولوحة تحكم — كل ده كـ router صغير (`SKILL.md`) + 8 موديولز (`references/`) بيتحملوا حسب المهمة بس، مش كلهم مع بعض.
 
 **التركيب:**
+
 1. اعمل ريبو على GitHub وارفع الفولدر ده فيه (تعليمات تحت في "Publish this repo").
 2. جوه Claude Code:
    ```
-   /plugin marketplace add YOUR_GITHUB_USERNAME/guard
+   /plugin marketplace add ahmedabdelkreem404/guard
    /plugin install guard@guard
    ```
 3. من هنا، أي طلب بناء أو فحص أو تعديل — الإيجنت هيستدعي `guard` تلقائي من غير ما تكتب حاجة زيادة. تقدر كمان تكتب `/guard` لفحص كامل للمشروع، أو `/guard security` / `/guard seo` / `/guard rtl` ... لفحص مجال واحد بس.
@@ -62,8 +64,8 @@ one giant prompt.
 
 ## Why a separate `using-guard`
 
-`guard` describes *what a senior engineer decides*. `using-guard` enforces *that the agent actually
-checks*. Splitting these two concerns is the core trick that makes superpowers-style skills reliable:
+`guard` describes _what a senior engineer decides_. `using-guard` enforces _that the agent actually
+checks_. Splitting these two concerns is the core trick that makes superpowers-style skills reliable:
 a skill's own description competing for attention against "just start coding" loses most of the time
 unless something makes the check itself mandatory. `using-guard`'s description matches "starting any
 conversation," so it's the first thing evaluated, and its body leaves no room to rationalize skipping
@@ -91,14 +93,14 @@ cd guard
 git init
 git add -A
 git commit -m "Initial guard plugin"
-gh repo create YOUR_GITHUB_USERNAME/guard --public --source=. --remote=origin --push
+gh repo create ahmedabdelkreem404/guard --public --source=. --remote=origin --push
 # or, without gh:
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/guard.git
+git remote add origin https://github.com/ahmedabdelkreem404/guard.git
 git branch -M main
 git push -u origin main
 ```
 
-Then replace `YOUR_GITHUB_USERNAME` in `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`,
+Then replace `ahmedabdelkreem404` in `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`,
 and this README with your real GitHub username, commit, and push again.
 
 ## Updating
