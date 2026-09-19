@@ -1,16 +1,23 @@
 # Guard
 
-Guard is a senior-engineer doctrine for your coding agent, packaged as a Claude Code plugin: security and authorization, performance, SEO, responsive design and accessibility, Arabic/English RTL, search and recommendation logic, and admin-dashboard rules. It is built on a small set of composable skills and an instruction that makes sure your agent uses them.
+Guard is a senior-engineer doctrine for your coding agent, packaged as a plugin for Claude Code, Codex, Antigravity and other coding agents: security and authorization, performance, SEO, responsive design and accessibility, Arabic/English RTL, search and recommendation logic, and admin-dashboard rules. It is built on a small set of composable skills and an instruction that makes sure your agent uses them.
 
 ## Table of Contents
 
 - [How it works](#how-it-works)
 - [Installation](#installation)
-  - [Claude Code](#claude-code-tested)
-  - [Codex](#codex-cli--codex-app-marketplace-registers-tested-plugin-install-is-done-in-the-ui)
-  - [Antigravity](#antigravity-tested)
-  - [Gemini, Cursor, Kimi, Devin, Droid, Copilot](#gemini-cli-manifest-only)
-  - [Any tool that reads SKILL.md folders](#any-tool-that-reads-skillmd-folders-no-marketplace)
+  - [Claude Code](#claude-code)
+  - [Antigravity](#antigravity)
+  - [Codex App](#codex-app)
+  - [Codex CLI](#codex-cli)
+  - [Cursor](#cursor)
+  - [Devin CLI](#devin-cli)
+  - [Factory Droid](#factory-droid)
+  - [Gemini CLI](#gemini-cli)
+  - [GitHub Copilot CLI](#github-copilot-cli)
+  - [Kimi Code](#kimi-code)
+  - [OpenCode, Pi, Hermes Agent](#opencode-pi-hermes-agent)
+  - [Any other tool that reads SKILL.md folders](#any-other-tool-that-reads-skillmd-folders)
 - [The Basic Workflow](#the-basic-workflow)
 - [What's Inside](#whats-inside)
 - [Philosophy](#philosophy)
@@ -33,32 +40,29 @@ Because the check is mandatory rather than suggested, you don't need to do anyth
 
 ## Installation
 
-Installation differs by tool: each one reads its own small manifest from this repo and installs through
-its own command. If you use more than one, install Guard separately for each. This repository is its own
-marketplace.
+Installation differs by tool. **Pick the one you use and run only its commands** — each command installs
+Guard for that tool only. The per-tool manifests in this repository (`.codex-plugin/`, `.cursor-plugin/`,
+`.kimi-plugin/`, and so on) install nothing by themselves; each tool reads only its own. If you use more
+than one tool, install Guard separately for each.
 
-Status labels: **tested** = installed and checked on a real machine; **manifest only** = the manifest
-follows the reference shape used by other multi-tool skill packs, but the install was not run.
+Status per tool: **tested** = installed and checked on a real machine; **not tested** = the manifest
+follows the reference layout used by other multi-tool skill packs, but the install was not run.
 
-### Claude Code (tested)
+### Claude Code
+
+Status: tested.
 
 ```bash
 /plugin marketplace add ahmedabdelkreem404/guard
 /plugin install guard@guard
 ```
 
-Or from a terminal: `claude plugin marketplace add ahmedabdelkreem404/guard` then
+From a terminal instead: `claude plugin marketplace add ahmedabdelkreem404/guard`, then
 `claude plugin install guard@guard`. Check with `claude plugin list`.
 
-### Codex CLI / Codex app (marketplace registers, tested; plugin install is done in the UI)
+### Antigravity
 
-```bash
-codex plugin marketplace add ahmedabdelkreem404/guard
-```
-
-Then open the plugin browser (`/plugins` in the CLI, Plugins in the app), find **Guard**, and install it.
-
-### Antigravity (tested)
+Status: tested.
 
 ```bash
 git clone https://github.com/ahmedabdelkreem404/guard
@@ -69,47 +73,80 @@ bash scripts/install-antigravity.sh                                        # mac
 
 The script stages the manifest and skills and runs `agy plugin install`. Restart `agy` afterwards.
 
-### Gemini CLI (manifest only)
+### Codex App
+
+Status: marketplace registration tested; the plugin install itself is done in the app.
+
+- Register the marketplace once (from a terminal): `codex plugin marketplace add ahmedabdelkreem404/guard`
+- In the Codex app, click **Plugins** in the sidebar, find **Guard**, click **+** and follow the prompts.
+
+### Codex CLI
+
+Status: marketplace registration tested; the plugin install itself is done in the CLI.
 
 ```bash
-gemini extensions install https://github.com/ahmedabdelkreem404/guard
+codex plugin marketplace add ahmedabdelkreem404/guard
 ```
 
-### Cursor (manifest only)
+Then open the plugin search interface with `/plugins`, search for `guard`, and select **Install Plugin**.
 
-`.cursor-plugin/plugin.json` is included. Install it through Cursor's plugin marketplace/local-plugin
-mechanism.
+### Cursor
 
-### Kimi Code (manifest only)
+Status: not tested.
 
-```text
-/plugins install https://github.com/ahmedabdelkreem404/guard
-```
+`.cursor-plugin/plugin.json` is included. Install it through Cursor's plugin marketplace or
+local-plugin mechanism.
 
-### Devin CLI (manifest only)
+### Devin CLI
+
+Status: not tested.
 
 ```bash
 devin plugins install ahmedabdelkreem404/guard
 ```
 
-### Factory Droid and GitHub Copilot CLI (manifest only — they consume the Claude Code marketplace)
+### Factory Droid
+
+Status: not tested. Droid reads the Claude Code plugin format (`.claude-plugin/`).
 
 ```bash
 droid plugin marketplace add https://github.com/ahmedabdelkreem404/guard
 droid plugin install guard@guard
+```
 
+### Gemini CLI
+
+Status: not tested.
+
+```bash
+gemini extensions install https://github.com/ahmedabdelkreem404/guard
+```
+
+### GitHub Copilot CLI
+
+Status: not tested. Copilot reads the Claude Code marketplace format (`.claude-plugin/`).
+
+```bash
 copilot plugin marketplace add ahmedabdelkreem404/guard
 copilot plugin install guard@guard
 ```
 
-### Not supported yet
+### Kimi Code
 
-OpenCode, Pi and Hermes need a small JavaScript/Python extension that this repository does not have.
+Status: not tested.
 
-### Any tool that reads `SKILL.md` folders, no marketplace
+```text
+/plugins install https://github.com/ahmedabdelkreem404/guard
+```
 
-Copy `skills/guard` and `skills/using-guard` into the tool's skills folder (for Claude Code:
-`.claude/skills/` in a project, or `~/.claude/skills/` for every project).
+### OpenCode, Pi, Hermes Agent
+
+Not supported yet: they need a small JavaScript or Python extension that this repository does not have.
+
+### Any other tool that reads `SKILL.md` folders
+
+No marketplace needed. Copy `skills/guard` and `skills/using-guard` into that tool's skills folder (for
+Claude Code: `.claude/skills/` inside a project, or `~/.claude/skills/` for every project).
 
 ## The Basic Workflow
 
