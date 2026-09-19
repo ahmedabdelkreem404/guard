@@ -200,8 +200,7 @@ guard/
 │           ├── SEOGuard.md          # 100 sections
 │           ├── InsightGuard.md      # 260 sections
 │           ├── DesignGuard.md       # 246 sections
-│           ├── DashboardGuard.md    # 207 sections
-│           └── run-audit-prompt.md  # the original 20-phase audit prompt
+│           └── DashboardGuard.md    # 207 sections
 ├── LICENSE
 └── README.md
 ```
